@@ -1,0 +1,22 @@
+{
+  "name": "frontend-base-tailwind",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "tailwind:watch": "npx tailwindcss -i src/styles/tailwind.css -o public/css/styles.css --watch",
+    "watch:copy-pages": "npx cpx \"src/pages/**/*\" public/ -w",
+    "watch:copy-components": "npx cpx \"src/components/**/*\" public/components -w",
+    "watch:copy-js": "npx cpx \"src/js/**/*\" public/js -w",
+    "serve": "npx http-server public -p 8080 -c-1",
+    "dev": "concurrently -k -n TAILWIND,COPY-PAGES,COPY-COMP,COPY-JS,SERVER -c \"cyan,magenta,green,blue,yellow\" \"npm:tailwind:watch\" \"npm:watch:copy-pages\" \"npm:watch:copy-components\" \"npm:watch:copy-js\" \"npm:serve\"",
+    "build:css": "npx tailwindcss -i src/styles/tailwind.css -o public/css/styles.css --minify",
+    "build:copy": "npx cpx \"src/pages/**/*\" public/ && npx cpx \"src/components/**/*\" public/components && npx cpx \"src/js/**/*\" public/js",
+    "build": "npm run build:css && npm run build:copy"
+  },
+  "devDependencies": {
+    "concurrently": "^8.0.0",
+    "cpx": "^1.5.0",
+    "http-server": "^14.1.1",
+    "tailwindcss": "^3.4.0"
+  }
+}
