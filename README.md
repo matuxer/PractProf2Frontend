@@ -178,19 +178,63 @@ npm run serve
 
 ---
 
-## 🌐 Desplegar el Sitio Web
+## 🔄 Flujo de Trabajo con Git (Para Equipos)
 
-Cuando estés listo para subir tu sitio a internet:
+### Estructura de Branches
+- **`main`** - Rama principal **PROTEGIDA** (solo administradores)
+- **`develop`** - Rama de desarrollo (aquí van todos los Pull Requests)
+- **Ramas de tareas** - Una rama por cada tarea específica
 
-1. **Compilar para producción:**
-   ```bash
-   npm run build
-   ```
+### Convención de Nombres de Tareas
+Las tareas siguen este formato: **FERRF-XX** (FERRETERIA FRONT N°XX)
 
-2. **Subir la carpeta `public/`** a tu servicio de hosting:
-   - [Netlify](https://netlify.com) (gratis, fácil)
-   - [Vercel](https://vercel.com) (gratis, rápido)
-   - [GitHub Pages](https://pages.github.com) (gratis con GitHub)
+Ejemplos:
+- `FERRF-18` - Tarea #18 del frontend de ferretería
+- `FERRF-25` - Tarea #25 del frontend de ferretería
+
+### 🚀 Cómo Trabajar en una Tarea
+
+**1. Crear rama desde develop:**
+```bash
+git checkout develop
+git pull origin develop
+git checkout -b feature/FERRF-18-pagina-productos
+```
+
+**2. Hacer cambios y commits:**
+```bash
+# Hacer tus cambios en el código
+git add .
+git commit -m "[FERRF-18] Añade página de productos con grid responsive"
+```
+
+**3. Subir y crear Pull Request:**
+```bash
+git push -u origin feature/FERRF-18-pagina-productos
+```
+Luego crear PR hacia **`develop`** (NO hacia `main`)
+
+**4. Después del merge, limpiar:**
+```bash
+git checkout develop
+git pull origin develop
+git branch -d feature/FERRF-18-pagina-productos
+```
+
+### 📋 Convenciones de Commits
+```bash
+git commit -m "[FERRF-XX] Descripción clara de lo que hace"
+```
+
+**Ejemplos:**
+- `[FERRF-18] Añade página de productos con filtros`
+- `[FERRF-19] Corrige responsive del header en móviles`
+- `[FERRF-20] Actualiza colores según diseño nuevo`
+
+### 🔒 Pull Requests
+- **Target:** Siempre hacia `develop` (main está protegido)
+- **Título:** `[FERRF-XX] Descripción de la tarea`
+- **Descripción:** Explicar qué se cambió y cómo probarlo
 
 ---
 
