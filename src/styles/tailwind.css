@@ -1,5 +1,3 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* Aquí puedes agregar utilidades/componentes globales con @layer components o @apply */
