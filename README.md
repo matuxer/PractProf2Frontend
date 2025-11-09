@@ -39,8 +39,8 @@ Con Tailwind usas clases predefinidas directamente en el HTML:
 ### 2. Clonar e instalar el proyecto
 ```bash
 # Clonar el repositorio
-git clone <url-del-repositorio>
-cd frontend
+git clone https://github.com/matuxer/PractProf2Frontend.git
+cd PractProf2Frontend
 
 # Instalar dependencias
 npm install
