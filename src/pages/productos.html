@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Favicon -->
+    <link rel="icon" type="icon" href="static/images/favicon.png" />
+    <title>Productos - Ferretería</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">    
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/swiper-bundle.css">
+    <link rel="stylesheet" href="css/custom.css">
+</head>
+
+<body>
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <!-- Mobile Menu Component -->
+    <div id="mobile-menu-placeholder"></div>
+
+    <!-- Page Title -->
+    <section class="bg-gray-100 py-8">
+        <div class="container mx-auto px-4">
+            <h1 class="text-4xl font-bold text-gray-800">Todos los Productos</h1>
+            <p class="text-gray-600 mt-2">Explora nuestro catálogo completo</p>
+        </div>
+    </section>
+
+    <!-- Products Grid Section -->
+    <section id="all-products" class="py-10">
+        <div class="container mx-auto px-4">
+            <div id="products-container" class="flex flex-wrap -mx-4">
+                <!-- Los productos se cargarán dinámicamente aquí -->
+                <div class="w-full text-center py-20">
+                    <p class="text-gray-500">Cargando productos...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <script src="js/swiper-bundle.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="js/loadComponents.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/fetchProducts.js"></script>
+    <script>
+        // Renderizar todos los productos cuando se cargue la página
+        document.addEventListener('DOMContentLoaded', async () => {
+            const container = document.getElementById('products-container');
+            
+            try {
+                const productos = await fetchProducts();
+                
+                if (productos && productos.length > 0) {
+                    container.innerHTML = '';
+                    
+                    productos.forEach(producto => {
+                        const productCard = `
+                            <div class="w-full sm:w-1/2 lg:w-1/4 px-4 mb-8">
+                                <div class="bg-white p-3 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+                                    <img src="http://localhost:3001${producto.imgUrl}" 
+                                         alt="${producto.nombre}" 
+                                         class="w-full h-64 object-cover mb-4 rounded-lg">
+                                    <a href="producto.html?id=${producto.id}" class="text-lg font-semibold mb-2 hover:text-primary">${producto.nombre}</a>
+                                    <p class="text-gray-600 text-sm my-2 line-clamp-2">${producto.descripcion}</p>
+                                    <div class="flex items-center justify-between mb-4">
+                                        <span class="text-lg font-bold text-primary">$${producto.precio_unitario.toFixed(2)}</span>
+                                        <span class="text-sm text-gray-500">Stock: ${producto.stock}</span>
+                                    </div>
+                                    <button class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full w-full transition-colors duration-300">
+                                        Agregar al Carrito
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                        container.innerHTML += productCard;
+                    });
+                } else {
+                    container.innerHTML = '<div class="w-full text-center py-20"><p class="text-gray-500">No se encontraron productos.</p></div>';
+                }
+            } catch (error) {
+                console.error('Error al cargar productos:', error);
+                container.innerHTML = '<div class="w-full text-center py-20"><p class="text-red-500">Error al cargar los productos. Por favor, intenta nuevamente.</p></div>';
+            }
+        });
+    </script>
+
+</body>
+</html>
