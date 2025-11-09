@@ -1,0 +1,134 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Favicon -->
+    <link rel="icon" type="icon" href="static/images/favicon.png" />
+    <title>Especialistas - Ferretería</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">    
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/swiper-bundle.css">
+    <link rel="stylesheet" href="css/custom.css">
+</head>
+
+<body>
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <!-- Mobile Menu Component -->
+    <div id="mobile-menu-placeholder"></div>
+
+    <!-- Page Title -->
+    <section class="bg-gray-100 py-8">
+        <div class="container mx-auto px-4">
+            <h1 class="text-4xl font-bold text-gray-800">Nuestros Especialistas</h1>
+            <p class="text-gray-600 mt-2">Encuentra al profesional perfecto para tu proyecto</p>
+        </div>
+    </section>
+
+    <!-- Specialists Grid Section -->
+    <section id="all-specialists" class="py-10">
+        <div class="container mx-auto px-4">
+            <div id="specialists-container" class="flex flex-wrap -mx-4">
+                <!-- Los especialistas se cargarán dinámicamente aquí -->
+                <div class="w-full text-center py-20">
+                    <p class="text-gray-500">Cargando especialistas...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <script src="js/swiper-bundle.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="js/loadComponents.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/fetchEspecialistas.js"></script>
+    <script>
+        // Renderizar todos los especialistas cuando se cargue la página
+        document.addEventListener('DOMContentLoaded', async () => {
+            const container = document.getElementById('specialists-container');
+            
+            try {
+                const especialistas = await fetchEspecialistas();
+                
+                if (especialistas && especialistas.length > 0) {
+                    container.innerHTML = '';
+                    
+                    especialistas.forEach(especialista => {
+                        // Generar estrellas de puntuación
+                        const maxStars = 5;
+                        const rating = especialista.puntuacion || 0;
+                        const fullStars = Math.floor(rating);
+                        const emptyStars = maxStars - fullStars;
+                        
+                        let starsHTML = '';
+                        for (let i = 0; i < fullStars; i++) {
+                            starsHTML += '<i class="fas fa-star text-yellow-400"></i>';
+                        }
+                        for (let i = 0; i < emptyStars; i++) {
+                            starsHTML += '<i class="far fa-star text-gray-300"></i>';
+                        }
+                        
+                        // Badge de disponibilidad
+                        const disponibilidadBadge = especialista.disponibilidad 
+                            ? '<span class="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full"><i class="fas fa-check-circle mr-1"></i>Disponible</span>'
+                            : '<span class="inline-block bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full"><i class="fas fa-times-circle mr-1"></i>No disponible</span>';
+                        
+                        const specialistCard = `
+                            <div class="w-full sm:w-1/2 lg:w-1/4 px-4 mb-8">
+                                <div class="bg-white p-4 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+                                    <div class="text-center mb-4">
+                                        <img src="http://localhost:3001${especialista.perfilImgUrl}" 
+                                             alt="${especialista.nombre} ${especialista.apellido}" 
+                                             class="w-32 h-32 rounded-full object-cover mx-auto mb-3 border-4 border-gray-100">
+                                        <h3 class="text-xl font-bold text-gray-800">${especialista.nombre} ${especialista.apellido}</h3>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <p class="text-sm font-semibold text-primary mb-1">
+                                            <i class="fas fa-briefcase mr-1"></i>${especialista.oficio?.nombre || 'No especificado'}
+                                        </p>
+                                        <p class="text-xs text-gray-500 mb-2">
+                                            <i class="fas fa-tag mr-1"></i>${especialista.oficio?.categoria || 'Sin categoría'}
+                                        </p>
+                                        <p class="text-xs text-gray-600 line-clamp-2 mb-3">${especialista.oficio?.descripcion || ''}</p>
+                                    </div>
+                                    
+                                    <div class="flex items-center justify-between mb-3 pb-3 border-b border-gray-200">
+                                        <div class="flex items-center gap-1">
+                                            ${starsHTML}
+                                            <span class="text-xs text-gray-500 ml-1">(${rating.toFixed(1)})</span>
+                                        </div>
+                                        ${disponibilidadBadge}
+                                    </div>
+                                    
+                                    <button class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full w-full transition-colors duration-300">
+                                        Ver Perfil
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                        container.innerHTML += specialistCard;
+                    });
+                } else {
+                    container.innerHTML = '<div class="w-full text-center py-20"><p class="text-gray-500">No se encontraron especialistas.</p></div>';
+                }
+            } catch (error) {
+                console.error('Error al cargar especialistas:', error);
+                container.innerHTML = '<div class="w-full text-center py-20"><p class="text-red-500">Error al cargar los especialistas. Por favor, intenta nuevamente.</p></div>';
+            }
+        });
+    </script>
+
+</body>
+</html>
