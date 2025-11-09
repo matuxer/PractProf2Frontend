@@ -10,8 +10,8 @@
     "watch:copy-static": "npx cpx \"src/static/**/*\" public/static -w",
     "watch:copy-css": "npx cpx \"src/styles/custom.css\" public/css -w",
     "watch:copy-swiper": "npx cpx \"node_modules/swiper/swiper-bundle.*\" public/css -w && npx cpx \"node_modules/swiper/swiper-bundle.js\" public/js -w",
-    "serve": "npx http-server public -p 8080 -c-1",
-    "dev": "concurrently -k -n TAILWIND,COPY-PAGES,COPY-COMP,COPY-JS,COPY-STATIC,COPY-CSS,COPY-SWIPER,SERVER -c \"cyan,magenta,green,blue,red,orange,purple,yellow\" \"npm:tailwind:watch\" \"npm:watch:copy-pages\" \"npm:watch:copy-components\" \"npm:watch:copy-js\" \"npm:watch:copy-static\" \"npm:watch:copy-css\" \"npm:watch:copy-swiper\" \"npm:serve\"",
+    "serve": "npx http-server src/pages -p 8080 -c-1",
+    "dev": "concurrently -k -n TAILWIND,SERVER -c \"cyan,yellow\" \"npm:tailwind:watch\" \"npm:serve\"",
     "build:css": "npx tailwindcss -i src/styles/tailwind.css -o public/css/styles.css --minify",
     "build:copy": "npx cpx \"src/pages/**/*\" public/ && npx cpx \"src/components/**/*\" public/components && npx cpx \"src/js/**/*\" public/js && npx cpx \"src/static/**/*\" public/static && npx cpx \"src/styles/custom.css\" public/css",
     "build": "npm run build:css && npm run build:copy"
