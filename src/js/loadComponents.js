@@ -13,4 +13,5 @@ async function loadComponent(id, file) {
 document.addEventListener('DOMContentLoaded', () => {
     loadComponent('header-placeholder', '../components/header.html');
     loadComponent('mobile-menu-placeholder', '../components/mobileDropdownMenu.html');
+    loadComponent('footer-placeholder', '../components/footer.html');
 });
