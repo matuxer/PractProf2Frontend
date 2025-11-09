@@ -71,7 +71,10 @@
                                     <img src="http://localhost:3001${producto.imgUrl}" 
                                          alt="${producto.nombre}" 
                                          class="w-full h-64 object-cover mb-4 rounded-lg">
-                                    <a href="producto.html?id=${producto.id}" class="text-lg font-semibold mb-2 hover:text-primary">${producto.nombre}</a>
+                                    <a href="producto.html?id=${producto.id}" class="text-lg font-semibold mb-2 hover:text-primary block">${producto.nombre}</a>
+                                    <p class="text-xs text-gray-500 mb-2">
+                                        <i class="fas fa-tag mr-1"></i>${producto.categoria?.nombre || 'Sin categoría'}
+                                    </p>
                                     <p class="text-gray-600 text-sm my-2 line-clamp-2">${producto.descripcion}</p>
                                     <div class="flex items-center justify-between mb-4">
                                         <span class="text-lg font-bold text-primary">$${producto.precio_unitario.toFixed(2)}</span>
