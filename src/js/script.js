@@ -43,6 +43,9 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 /* swiper slider */
+// NOTA: Los sliders específicos se inicializan en cada página
+// Este código está desactivado para evitar conflictos
+/*
 if (typeof Swiper !== 'undefined') {
   var swiper = new Swiper('.swiper', {
     slidesPerView: 2,
@@ -73,6 +76,7 @@ if (typeof Swiper !== 'undefined') {
     },
   });
 }
+*/
 
 /* search icon show/hide */
 const searchIcon = document.getElementById('search-icon');
