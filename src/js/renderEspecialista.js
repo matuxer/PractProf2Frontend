@@ -5,8 +5,13 @@ async function loadEspecialistaTemplate() {
 }
 
 function renderEspecialista(especialista, template) {
-  // Generar array de estrellas para el rating
-  const stars = Array.from({ length: 5 }, (_, i) => i < Math.floor(especialista.puntuacion));
+  // Generar estrellas llenas y vacías según la puntuación
+  const fullStars = Math.floor(especialista.puntuacion);
+  const emptyStars = 5 - fullStars;
+  
+  const starHTML = 
+    '<i class="fas fa-star text-yellow-400"></i>'.repeat(fullStars) +
+    '<i class="far fa-star text-gray-300"></i>'.repeat(emptyStars);
   
   // Agregar prefijo de URL del backend si no está presente
   const perfilImgUrl = especialista.perfilImgUrl.startsWith('http') 
@@ -35,7 +40,6 @@ function renderEspecialista(especialista, template) {
   }
   
   // Manejar estrellas (loop)
-  const starHTML = stars.map(() => '<i class="fas fa-star text-yellow-400"></i>').join('');
   html = html.replace(/{{#each stars}}[\s\S]*?{{\/each}}/g, starHTML);
   
   return html;
