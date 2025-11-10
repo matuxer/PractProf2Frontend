@@ -30,6 +30,25 @@
         <div class="container mx-auto px-4">
             <h1 class="text-4xl font-bold text-gray-800">Nuestros Especialistas</h1>
             <p class="text-gray-600 mt-2">Encuentra al profesional perfecto para tu proyecto</p>
+            
+            <!-- Barra de búsqueda -->
+            <div class="mt-6 max-w-2xl">
+                <div class="relative">
+                    <input 
+                        type="text" 
+                        id="search-input"
+                        placeholder="Buscar especialistas por nombre..."
+                        class="w-full px-4 py-3 pl-12 pr-4 rounded-full border-2 border-gray-300 focus:border-primary focus:outline-none transition-colors"
+                    >
+                    <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    <button 
+                        id="clear-search" 
+                        class="hidden absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    >
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -59,17 +78,17 @@
     <script src="js/renderEspecialista.js"></script>
     <script>
         // Renderizar todos los especialistas cuando se cargue la página
+        let todosLosEspecialistas = []; // Guardar todos los especialistas
+        let template = null;
+        
         document.addEventListener('DOMContentLoaded', async () => {
             const container = document.getElementById('specialists-container');
             const loader = document.getElementById('specialists-loader');
+            const searchInput = document.getElementById('search-input');
+            const clearButton = document.getElementById('clear-search');
             
-            try {
-                const especialistas = await fetchEspecialistas();
-                const template = await loadEspecialistaTemplate();
-                
-                // Ocultar loader
-                loader.style.display = 'none';
-                
+            // Función para renderizar especialistas
+            function renderEspecialistas(especialistas) {
                 if (especialistas && especialistas.length > 0) {
                     container.innerHTML = '';
                     
@@ -82,6 +101,30 @@
                         `;
                         container.innerHTML += wrappedCard;
                     });
+                } else {
+                    // Mensaje de no hay especialistas
+                    container.innerHTML = `
+                        <div class="w-full text-center py-20">
+                            <div class="inline-block">
+                                <i class="fas fa-search text-6xl text-gray-300 mb-4"></i>
+                                <p class="text-gray-600 text-xl font-semibold mb-2">No se encontraron especialistas</p>
+                                <p class="text-gray-500">Intenta con otro término de búsqueda</p>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+            
+            // Cargar especialistas iniciales
+            try {
+                todosLosEspecialistas = await fetchEspecialistas();
+                template = await loadEspecialistaTemplate();
+                
+                // Ocultar loader
+                loader.style.display = 'none';
+                
+                if (todosLosEspecialistas && todosLosEspecialistas.length > 0) {
+                    renderEspecialistas(todosLosEspecialistas);
                 } else {
                     // Mensaje de no hay especialistas
                     container.innerHTML = `
@@ -109,6 +152,44 @@
                     </div>
                 `;
             }
+            
+            // Búsqueda en tiempo real
+            let searchTimeout;
+            searchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.trim();
+                
+                // Mostrar/ocultar botón de limpiar
+                if (searchTerm) {
+                    clearButton.classList.remove('hidden');
+                } else {
+                    clearButton.classList.add('hidden');
+                }
+                
+                // Debounce para evitar muchas búsquedas
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(async () => {
+                    if (searchTerm) {
+                        // Buscar en el backend
+                        try {
+                            const response = await fetch(`http://localhost:3001/especialistas?nombre=${encodeURIComponent(searchTerm)}`);
+                            const especialistas = await response.json();
+                            renderEspecialistas(especialistas);
+                        } catch (error) {
+                            console.error('Error en búsqueda:', error);
+                        }
+                    } else {
+                        // Mostrar todos los especialistas
+                        renderEspecialistas(todosLosEspecialistas);
+                    }
+                }, 300); // Esperar 300ms después de dejar de escribir
+            });
+            
+            // Botón para limpiar búsqueda
+            clearButton.addEventListener('click', () => {
+                searchInput.value = '';
+                clearButton.classList.add('hidden');
+                renderEspecialistas(todosLosEspecialistas);
+            });
         });
     </script>
 

@@ -30,6 +30,25 @@
         <div class="container mx-auto px-4">
             <h1 class="text-4xl font-bold text-gray-800">Todos los Productos</h1>
             <p class="text-gray-600 mt-2">Explora nuestro catálogo completo</p>
+            
+            <!-- Barra de búsqueda -->
+            <div class="mt-6 max-w-2xl">
+                <div class="relative">
+                    <input 
+                        type="text" 
+                        id="search-input"
+                        placeholder="Buscar productos por nombre..."
+                        class="w-full px-4 py-3 pl-12 pr-4 rounded-full border-2 border-gray-300 focus:border-primary focus:outline-none transition-colors"
+                    >
+                    <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    <button 
+                        id="clear-search" 
+                        class="hidden absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    >
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -58,16 +77,16 @@
     <script src="js/fetchProducts.js"></script>
     <script>
         // Renderizar todos los productos cuando se cargue la página
+        let todosLosProductos = []; // Guardar todos los productos
+        
         document.addEventListener('DOMContentLoaded', async () => {
             const container = document.getElementById('products-container');
             const loader = document.getElementById('products-loader');
+            const searchInput = document.getElementById('search-input');
+            const clearButton = document.getElementById('clear-search');
             
-            try {
-                const productos = await fetchProducts();
-                
-                // Ocultar loader
-                loader.style.display = 'none';
-                
+            // Función para renderizar productos
+            function renderProductos(productos) {
                 if (productos && productos.length > 0) {
                     container.innerHTML = '';
                     
@@ -100,6 +119,29 @@
                     container.innerHTML = `
                         <div class="w-full text-center py-20">
                             <div class="inline-block">
+                                <i class="fas fa-search text-6xl text-gray-300 mb-4"></i>
+                                <p class="text-gray-600 text-xl font-semibold mb-2">No se encontraron productos</p>
+                                <p class="text-gray-500">Intenta con otro término de búsqueda</p>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+            
+            // Cargar productos iniciales
+            try {
+                todosLosProductos = await fetchProducts();
+                
+                // Ocultar loader
+                loader.style.display = 'none';
+                
+                if (todosLosProductos && todosLosProductos.length > 0) {
+                    renderProductos(todosLosProductos);
+                } else {
+                    // Mensaje de no hay productos
+                    container.innerHTML = `
+                        <div class="w-full text-center py-20">
+                            <div class="inline-block">
                                 <i class="fas fa-box-open text-6xl text-gray-300 mb-4"></i>
                                 <p class="text-gray-600 text-xl font-semibold mb-2">No hay productos disponibles</p>
                                 <p class="text-gray-500">Vuelve a intentarlo más tarde</p>
@@ -122,6 +164,44 @@
                     </div>
                 `;
             }
+            
+            // Búsqueda en tiempo real
+            let searchTimeout;
+            searchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.trim();
+                
+                // Mostrar/ocultar botón de limpiar
+                if (searchTerm) {
+                    clearButton.classList.remove('hidden');
+                } else {
+                    clearButton.classList.add('hidden');
+                }
+                
+                // Debounce para evitar muchas búsquedas
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(async () => {
+                    if (searchTerm) {
+                        // Buscar en el backend
+                        try {
+                            const response = await fetch(`http://localhost:3001/productos?nombre=${encodeURIComponent(searchTerm)}`);
+                            const productos = await response.json();
+                            renderProductos(productos);
+                        } catch (error) {
+                            console.error('Error en búsqueda:', error);
+                        }
+                    } else {
+                        // Mostrar todos los productos
+                        renderProductos(todosLosProductos);
+                    }
+                }, 300); // Esperar 300ms después de dejar de escribir
+            });
+            
+            // Botón para limpiar búsqueda
+            clearButton.addEventListener('click', () => {
+                searchInput.value = '';
+                clearButton.classList.add('hidden');
+                renderProductos(todosLosProductos);
+            });
         });
     </script>
 
