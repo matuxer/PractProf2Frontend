@@ -37,9 +37,12 @@
     <section id="all-specialists" class="py-10">
         <div class="container mx-auto px-4">
             <div id="specialists-container" class="flex flex-wrap -mx-4">
-                <!-- Los especialistas se cargarán dinámicamente aquí -->
-                <div class="w-full text-center py-20">
-                    <p class="text-gray-500">Cargando especialistas...</p>
+                <!-- Loader -->
+                <div id="specialists-loader" class="w-full text-center py-20">
+                    <div class="inline-block">
+                        <i class="fas fa-spinner fa-spin text-5xl text-primary mb-4"></i>
+                        <p class="text-gray-600 text-lg">Cargando especialistas...</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -58,10 +61,14 @@
         // Renderizar todos los especialistas cuando se cargue la página
         document.addEventListener('DOMContentLoaded', async () => {
             const container = document.getElementById('specialists-container');
+            const loader = document.getElementById('specialists-loader');
             
             try {
                 const especialistas = await fetchEspecialistas();
                 const template = await loadEspecialistaTemplate();
+                
+                // Ocultar loader
+                loader.style.display = 'none';
                 
                 if (especialistas && especialistas.length > 0) {
                     container.innerHTML = '';
@@ -76,11 +83,31 @@
                         container.innerHTML += wrappedCard;
                     });
                 } else {
-                    container.innerHTML = '<div class="w-full text-center py-20"><p class="text-gray-500">No se encontraron especialistas.</p></div>';
+                    // Mensaje de no hay especialistas
+                    container.innerHTML = `
+                        <div class="w-full text-center py-20">
+                            <div class="inline-block">
+                                <i class="fas fa-users text-6xl text-gray-300 mb-4"></i>
+                                <p class="text-gray-600 text-xl font-semibold mb-2">No hay especialistas disponibles</p>
+                                <p class="text-gray-500">Vuelve a intentarlo más tarde</p>
+                            </div>
+                        </div>
+                    `;
                 }
             } catch (error) {
                 console.error('Error al cargar especialistas:', error);
-                container.innerHTML = '<div class="w-full text-center py-20"><p class="text-red-500">Error al cargar los especialistas. Por favor, intenta nuevamente.</p></div>';
+                // Ocultar loader
+                loader.style.display = 'none';
+                // Mensaje de error
+                container.innerHTML = `
+                    <div class="w-full text-center py-20">
+                        <div class="inline-block">
+                            <i class="fas fa-exclamation-triangle text-6xl text-red-400 mb-4"></i>
+                            <p class="text-red-600 text-xl font-semibold mb-2">Error al cargar los especialistas</p>
+                            <p class="text-gray-500">Por favor, intenta nuevamente más tarde</p>
+                        </div>
+                    </div>
+                `;
             }
         });
     </script>

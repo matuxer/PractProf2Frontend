@@ -37,9 +37,12 @@
     <section id="all-products" class="py-10">
         <div class="container mx-auto px-4">
             <div id="products-container" class="flex flex-wrap -mx-4">
-                <!-- Los productos se cargarán dinámicamente aquí -->
-                <div class="w-full text-center py-20">
-                    <p class="text-gray-500">Cargando productos...</p>
+                <!-- Loader -->
+                <div id="products-loader" class="w-full text-center py-20">
+                    <div class="inline-block">
+                        <i class="fas fa-spinner fa-spin text-5xl text-primary mb-4"></i>
+                        <p class="text-gray-600 text-lg">Cargando productos...</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -57,9 +60,13 @@
         // Renderizar todos los productos cuando se cargue la página
         document.addEventListener('DOMContentLoaded', async () => {
             const container = document.getElementById('products-container');
+            const loader = document.getElementById('products-loader');
             
             try {
                 const productos = await fetchProducts();
+                
+                // Ocultar loader
+                loader.style.display = 'none';
                 
                 if (productos && productos.length > 0) {
                     container.innerHTML = '';
@@ -89,11 +96,31 @@
                         container.innerHTML += productCard;
                     });
                 } else {
-                    container.innerHTML = '<div class="w-full text-center py-20"><p class="text-gray-500">No se encontraron productos.</p></div>';
+                    // Mensaje de no hay productos
+                    container.innerHTML = `
+                        <div class="w-full text-center py-20">
+                            <div class="inline-block">
+                                <i class="fas fa-box-open text-6xl text-gray-300 mb-4"></i>
+                                <p class="text-gray-600 text-xl font-semibold mb-2">No hay productos disponibles</p>
+                                <p class="text-gray-500">Vuelve a intentarlo más tarde</p>
+                            </div>
+                        </div>
+                    `;
                 }
             } catch (error) {
                 console.error('Error al cargar productos:', error);
-                container.innerHTML = '<div class="w-full text-center py-20"><p class="text-red-500">Error al cargar los productos. Por favor, intenta nuevamente.</p></div>';
+                // Ocultar loader
+                loader.style.display = 'none';
+                // Mensaje de error
+                container.innerHTML = `
+                    <div class="w-full text-center py-20">
+                        <div class="inline-block">
+                            <i class="fas fa-exclamation-triangle text-6xl text-red-400 mb-4"></i>
+                            <p class="text-red-600 text-xl font-semibold mb-2">Error al cargar los productos</p>
+                            <p class="text-gray-500">Por favor, intenta nuevamente más tarde</p>
+                        </div>
+                    </div>
+                `;
             }
         });
     </script>
