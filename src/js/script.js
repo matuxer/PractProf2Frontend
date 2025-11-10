@@ -30,18 +30,6 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
-/* mobile menu */
-document.addEventListener("DOMContentLoaded", function () {
-  const hamburgerBtn = document.getElementById('hamburger');
-  const mobileMenu = document.querySelector('.mobile-menu');
-
-  if (hamburgerBtn && mobileMenu) {
-    hamburgerBtn.addEventListener('click', function () {
-      mobileMenu.classList.toggle('hidden');
-    });
-  }
-});
-
 /* swiper slider */
 // NOTA: Los sliders específicos se inicializan en cada página
 // Este código está desactivado para evitar conflictos

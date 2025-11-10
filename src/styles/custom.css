@@ -9,6 +9,19 @@ button:hover {
 
 .mobile-menu {
     padding: 2rem;
+    background-color: #1a1a1a;
+    width: 100%;
+    color: white;
+}
+
+.mobile-menu a {
+    color: white;
+}
+
+/* Header sticky para que el menú móvil se quede pegado */
+header.sticky {
+    position: sticky;
+    top: 0;
 }
 
 .dropdown-enter-active,
@@ -177,7 +190,29 @@ button:hover {
 
     .swiper-button-prev,
     .swiper-button-next {
-        display: none;
+        display: flex !important;
+        width: 30px !important;
+        height: 30px !important;
+        background-color: rgba(255, 0, 66, 0.9);
+        border-radius: 50%;
+    }
+    
+    .swiper-button-prev::after,
+    .swiper-button-next::after {
+        font-size: 14px !important;
+        color: white;
+        font-weight: bold;
+    }
+    
+    /* Ajustar posición en móvil */
+    #popular-products .swiper-button-prev,
+    #latest-products .swiper-button-prev {
+        left: 5px !important;
+    }
+    
+    #popular-products .swiper-button-next,
+    #latest-products .swiper-button-next {
+        right: 5px !important;
     }
 }
 
@@ -231,3 +266,30 @@ img.cursor-pointer:hover {
     border-color: #ff0042;
 }
 
+/* Mejoras para móvil */
+@media (max-width: 640px) {
+    /* Reducir padding en cards para móvil */
+    .swiper-slide .bg-white {
+        padding: 0.75rem !important;
+    }
+    
+    /* Ajustar altura de imágenes en cards */
+    .swiper-slide img {
+        height: 200px !important;
+        object-fit: cover;
+    }
+    
+    /* Mejorar espaciado de secciones */
+    #popular-products,
+    #latest-products {
+        padding-top: 1.5rem;
+        padding-bottom: 1.5rem;
+    }
+    
+    /* Títulos más pequeños */
+    #popular-products h2,
+    #latest-products h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+}
