@@ -123,6 +123,83 @@
     <!-- Footer Component -->
     <div id="footer-placeholder"></div>
 
+    <!-- Modal para Agregar Feedback -->
+    <div id="feedback-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-2xl font-bold text-gray-800">
+                    <i class="fas fa-star text-yellow-400 mr-2"></i>Agregar Feedback
+                </h3>
+                <button id="close-modal-btn" class="text-gray-400 hover:text-gray-600 text-2xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <form id="feedback-form" class="space-y-4">
+                <!-- Clasificación -->
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">
+                        Clasificación *
+                    </label>
+                    <div class="flex items-center gap-2">
+                        <div id="star-rating" class="flex gap-1 text-3xl">
+                            <i class="far fa-star cursor-pointer hover:text-yellow-400 transition-colors" data-rating="1"></i>
+                            <i class="far fa-star cursor-pointer hover:text-yellow-400 transition-colors" data-rating="2"></i>
+                            <i class="far fa-star cursor-pointer hover:text-yellow-400 transition-colors" data-rating="3"></i>
+                            <i class="far fa-star cursor-pointer hover:text-yellow-400 transition-colors" data-rating="4"></i>
+                            <i class="far fa-star cursor-pointer hover:text-yellow-400 transition-colors" data-rating="5"></i>
+                        </div>
+                        <span id="rating-value" class="text-gray-600 font-semibold">0/5</span>
+                    </div>
+                    <input type="hidden" id="clasificacion-input" name="clasificacion" value="0" required>
+                </div>
+
+                <!-- Comentario -->
+                <div>
+                    <label for="comentario-input" class="block text-gray-700 font-semibold mb-2">
+                        Comentario * <span class="text-sm text-gray-500">(máx. 255 caracteres)</span>
+                    </label>
+                    <textarea 
+                        id="comentario-input" 
+                        name="comentario"
+                        rows="4"
+                        maxlength="255"
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
+                        placeholder="Escribe tu experiencia con este especialista..."
+                    ></textarea>
+                    <div class="text-right text-sm text-gray-500 mt-1">
+                        <span id="char-count">0</span>/255
+                    </div>
+                </div>
+
+                <!-- Mensaje de error -->
+                <div id="feedback-error" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                    <i class="fas fa-exclamation-circle mr-2"></i>
+                    <span id="feedback-error-text"></span>
+                </div>
+
+                <!-- Botones -->
+                <div class="flex gap-3 pt-2">
+                    <button 
+                        type="button" 
+                        id="cancel-feedback-btn"
+                        class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-full font-semibold hover:bg-gray-100 transition-colors"
+                    >
+                        Cancelar
+                    </button>
+                    <button 
+                        type="submit" 
+                        id="submit-feedback-btn"
+                        class="flex-1 px-4 py-2 bg-primary text-white rounded-full font-semibold hover:bg-opacity-90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        <i class="fas fa-paper-plane mr-2"></i>Enviar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <script src="../js/loadComponents.js"></script>
     <script src="js/especialista-detalle.js"></script>

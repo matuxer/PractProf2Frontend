@@ -2,6 +2,10 @@
 
 const API_URL = 'http://localhost:3001';
 
+// Variables globales
+let currentEspecialistaId = null;
+let selectedRating = 0;
+
 // Obtener el ID del especialista de la URL
 function getEspecialistaIdFromURL() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -60,6 +64,9 @@ async function loadEspecialista() {
         showError();
         return;
     }
+
+    // Guardar ID del especialista actual
+    currentEspecialistaId = parseInt(especialistaId);
 
     const loadingState = document.getElementById('loading-state');
     const errorState = document.getElementById('error-state');
@@ -161,6 +168,9 @@ function updateFeedbackButton() {
         // Usuario logueado - mostrar botón de agregar feedback
         addFeedbackBtn.classList.remove('hidden');
         loginToFeedbackBtn.classList.add('hidden');
+        
+        // Agregar evento click para abrir modal
+        addFeedbackBtn.addEventListener('click', openFeedbackModal);
     } else {
         // Usuario no logueado - mostrar botón de login
         addFeedbackBtn.classList.add('hidden');
@@ -168,8 +178,243 @@ function updateFeedbackButton() {
     }
 }
 
+// Abrir modal de feedback
+function openFeedbackModal() {
+    const modal = document.getElementById('feedback-modal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    resetFeedbackForm();
+}
+
+// Cerrar modal de feedback
+function closeFeedbackModal() {
+    const modal = document.getElementById('feedback-modal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    resetFeedbackForm();
+}
+
+// Resetear formulario
+function resetFeedbackForm() {
+    selectedRating = 0;
+    document.getElementById('feedback-form').reset();
+    document.getElementById('clasificacion-input').value = '0';
+    document.getElementById('rating-value').textContent = '0/5';
+    document.getElementById('char-count').textContent = '0';
+    
+    // Resetear estrellas
+    const stars = document.querySelectorAll('#star-rating i');
+    stars.forEach(star => {
+        star.classList.remove('fas', 'text-yellow-400');
+        star.classList.add('far');
+    });
+    
+    // Ocultar error
+    document.getElementById('feedback-error').classList.add('hidden');
+}
+
+// Manejar selección de estrellas
+function setupStarRating() {
+    const stars = document.querySelectorAll('#star-rating i');
+    const ratingValue = document.getElementById('rating-value');
+    const clasificacionInput = document.getElementById('clasificacion-input');
+    
+    stars.forEach(star => {
+        // Hover effect
+        star.addEventListener('mouseenter', function() {
+            const rating = parseInt(this.getAttribute('data-rating'));
+            highlightStars(rating);
+        });
+        
+        // Click para seleccionar
+        star.addEventListener('click', function() {
+            selectedRating = parseInt(this.getAttribute('data-rating'));
+            clasificacionInput.value = selectedRating;
+            ratingValue.textContent = `${selectedRating}/5`;
+            highlightStars(selectedRating);
+        });
+    });
+    
+    // Restaurar selección al salir del hover
+    const starContainer = document.getElementById('star-rating');
+    starContainer.addEventListener('mouseleave', function() {
+        if (selectedRating > 0) {
+            highlightStars(selectedRating);
+        } else {
+            highlightStars(0);
+        }
+    });
+}
+
+// Resaltar estrellas
+function highlightStars(rating) {
+    const stars = document.querySelectorAll('#star-rating i');
+    stars.forEach((star, index) => {
+        if (index < rating) {
+            star.classList.remove('far');
+            star.classList.add('fas', 'text-yellow-400');
+        } else {
+            star.classList.remove('fas', 'text-yellow-400');
+            star.classList.add('far');
+        }
+    });
+}
+
+// Contador de caracteres
+function setupCharCounter() {
+    const comentarioInput = document.getElementById('comentario-input');
+    const charCount = document.getElementById('char-count');
+    
+    comentarioInput.addEventListener('input', function() {
+        charCount.textContent = this.value.length;
+    });
+}
+
+// Obtener datos del usuario desde localStorage
+function getUserData() {
+    const usuarioStr = localStorage.getItem('usuario');
+    if (!usuarioStr) return null;
+    
+    try {
+        return JSON.parse(usuarioStr);
+    } catch (error) {
+        console.error('Error parsing user data:', error);
+        return null;
+    }
+}
+
+// Enviar feedback
+async function submitFeedback(event) {
+    event.preventDefault();
+    
+    const usuario = getUserData();
+    if (!usuario || !usuario.id) {
+        showFeedbackError('No se pudo obtener la información del usuario');
+        return;
+    }
+    
+    const clasificacion = parseInt(document.getElementById('clasificacion-input').value);
+    const comentario = document.getElementById('comentario-input').value.trim();
+    
+    // Validaciones
+    if (clasificacion < 1 || clasificacion > 5) {
+        showFeedbackError('Por favor selecciona una clasificación de 1 a 5 estrellas');
+        return;
+    }
+    
+    if (!comentario) {
+        showFeedbackError('Por favor escribe un comentario');
+        return;
+    }
+    
+    if (comentario.length > 255) {
+        showFeedbackError('El comentario no puede exceder 255 caracteres');
+        return;
+    }
+    
+    const submitBtn = document.getElementById('submit-feedback-btn');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Enviando...';
+    
+    try {
+        const response = await fetch(`${API_URL}/feedbacks/crear`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                clienteId: usuario.id,
+                especialistaId: currentEspecialistaId,
+                clasificacion: clasificacion,
+                comentario: comentario
+            })
+        });
+        
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(errorText || 'Error al enviar el feedback');
+        }
+        
+        const feedback = await response.json();
+        
+        // Cerrar modal
+        closeFeedbackModal();
+        
+        // Mostrar mensaje de éxito
+        showSuccessMessage('¡Feedback enviado correctamente!');
+        
+        // Recargar datos del especialista para mostrar el nuevo feedback
+        setTimeout(() => {
+            loadEspecialista();
+        }, 1500);
+        
+    } catch (error) {
+        console.error('Error al enviar feedback:', error);
+        showFeedbackError(error.message);
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-paper-plane mr-2"></i>Enviar';
+    }
+}
+
+// Mostrar error en el modal
+function showFeedbackError(message) {
+    const errorDiv = document.getElementById('feedback-error');
+    const errorText = document.getElementById('feedback-error-text');
+    errorText.textContent = message;
+    errorDiv.classList.remove('hidden');
+}
+
+// Mostrar mensaje de éxito
+function showSuccessMessage(message) {
+    const existingMessage = document.querySelector('.success-toast');
+    if (existingMessage) {
+        existingMessage.remove();
+    }
+    
+    const toast = document.createElement('div');
+    toast.className = 'success-toast fixed top-4 right-4 bg-green-500 text-white px-6 py-4 rounded-lg shadow-lg z-50 flex items-center gap-3';
+    toast.innerHTML = `
+        <i class="fas fa-check-circle text-xl"></i>
+        <span>${message}</span>
+    `;
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.remove();
+    }, 3000);
+}
+
+// Setup de eventos del modal
+function setupModalEvents() {
+    const modal = document.getElementById('feedback-modal');
+    const closeBtn = document.getElementById('close-modal-btn');
+    const cancelBtn = document.getElementById('cancel-feedback-btn');
+    const form = document.getElementById('feedback-form');
+    
+    // Cerrar modal con botón X
+    closeBtn.addEventListener('click', closeFeedbackModal);
+    
+    // Cerrar modal con botón Cancelar
+    cancelBtn.addEventListener('click', closeFeedbackModal);
+    
+    // Cerrar modal al hacer click fuera
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            closeFeedbackModal();
+        }
+    });
+    
+    // Submit del formulario
+    form.addEventListener('submit', submitFeedback);
+}
+
 // Cargar cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', () => {
     loadEspecialista();
     updateFeedbackButton();
+    setupStarRating();
+    setupCharCounter();
+    setupModalEvents();
 });
