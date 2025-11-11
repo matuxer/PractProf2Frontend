@@ -70,9 +70,10 @@
       
       <!-- User info (shown when logged in) -->
       <div id="user-info-desktop" class="hidden items-center space-x-4">
-        <span class="text-gray-800 font-medium">
+        <a href="perfil.html" class="text-gray-800 font-medium hover:text-primary transition-colors">
+          <i class="fas fa-user-circle mr-1"></i>
           ¡Hola, <span id="user-name-desktop">Usuario</span>!
-        </span>
+        </a>
         <button
           id="logout-btn-desktop"
           class="bg-red-500 border border-red-500 hover:bg-transparent text-white hover:text-red-500 font-semibold px-4 py-2 rounded-full"
@@ -114,9 +115,10 @@
     
     <!-- User info (shown when logged in) -->
     <div id="user-info-mobile" class="hidden flex-col mt-6 space-y-2 items-center">
-      <p class="text-gray-800 font-medium text-center">
+      <a href="perfil.html" class="text-gray-800 font-medium hover:text-primary transition-colors text-center">
+        <i class="fas fa-user-circle mr-1"></i>
         ¡Hola, <span id="user-name-mobile">Usuario</span>!
-      </p>
+      </a>
       <button
         id="logout-btn-mobile"
         class="bg-red-500 border border-red-500 hover:bg-transparent text-white hover:text-red-500 font-semibold px-4 py-2 rounded-full min-w-[110px]"

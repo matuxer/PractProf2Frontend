@@ -1,0 +1,142 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Favicon -->
+    <link rel="icon" type="icon" href="static/images/favicon.png" />
+    <title>Mi Perfil - La Casa de la Ferretería</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/custom.css">
+</head>
+
+<body class="bg-gray-50">
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <!-- Profile Section -->
+    <section class="py-16">
+        <div class="container mx-auto px-4">
+            <!-- Loading State -->
+            <div id="loading-state" class="text-center py-20">
+                <i class="fas fa-spinner fa-spin text-4xl text-primary mb-4"></i>
+                <p class="text-gray-600">Cargando perfil...</p>
+            </div>
+
+            <!-- Error State -->
+            <div id="error-state" class="hidden text-center py-20">
+                <i class="fas fa-exclamation-circle text-4xl text-red-500 mb-4"></i>
+                <p class="text-gray-600 mb-4">No se pudo cargar el perfil. Por favor inicia sesión.</p>
+                <a href="login.html" class="bg-primary text-white px-6 py-2 rounded-full inline-block hover:bg-opacity-90">
+                    Iniciar Sesión
+                </a>
+            </div>
+
+            <!-- Profile Content -->
+            <div id="profile-content" class="hidden">
+                <!-- Profile Header -->
+                <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+                    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                        <div class="flex items-center gap-6">
+                            <div class="w-24 h-24 bg-primary rounded-full flex items-center justify-center text-white text-4xl font-bold">
+                                <span id="user-initials"></span>
+                            </div>
+                            <div>
+                                <h1 id="user-name" class="text-3xl font-bold text-gray-800 mb-2"></h1>
+                                <p id="user-email" class="text-gray-600 mb-1">
+                                    <i class="fas fa-envelope mr-2"></i>
+                                </p>
+                                <p id="user-phone" class="text-gray-600">
+                                    <i class="fas fa-phone mr-2"></i>
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- Puntos de Recompensa -->
+                        <div class="bg-gradient-to-r from-yellow-400 to-yellow-500 text-white px-6 py-4 rounded-lg shadow-md">
+                            <div class="text-center">
+                                <i class="fas fa-star text-2xl mb-2"></i>
+                                <p class="text-sm font-medium">Puntos de Recompensa</p>
+                                <p id="reward-points" class="text-3xl font-bold"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dirección -->
+                    <div class="mt-6 pt-6 border-t border-gray-200">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3">
+                            <i class="fas fa-map-marker-alt text-primary mr-2"></i>Dirección
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-600">
+                            <p id="user-address"></p>
+                            <p id="user-location"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabs Navigation -->
+                <div class="bg-white rounded-lg shadow-lg mb-8">
+                    <div class="border-b border-gray-200">
+                        <nav class="flex -mb-px">
+                            <button id="tab-compras" class="tab-button active px-6 py-4 text-sm font-medium border-b-2 border-primary text-primary">
+                                <i class="fas fa-shopping-bag mr-2"></i>Historial de Compras
+                            </button>
+                            <button id="tab-feedbacks" class="tab-button px-6 py-4 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                                <i class="fas fa-comment-dots mr-2"></i>Mis Feedbacks
+                            </button>
+                        </nav>
+                    </div>
+
+                    <!-- Tab Content: Compras -->
+                    <div id="content-compras" class="tab-content p-6">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-6">Historial de Compras</h2>
+                        
+                        <!-- No hay compras -->
+                        <div id="no-compras" class="hidden text-center py-12 text-gray-500">
+                            <i class="fas fa-shopping-basket text-4xl mb-4"></i>
+                            <p>No has realizado compras todavía</p>
+                        </div>
+
+                        <!-- Lista de Compras -->
+                        <div id="compras-list" class="space-y-6">
+                            <!-- Las compras se cargarán aquí dinámicamente -->
+                        </div>
+                    </div>
+
+                    <!-- Tab Content: Feedbacks -->
+                    <div id="content-feedbacks" class="tab-content hidden p-6">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-6">Feedbacks Escritos</h2>
+                        
+                        <!-- No hay feedbacks -->
+                        <div id="no-feedbacks" class="hidden text-center py-12 text-gray-500">
+                            <i class="fas fa-comment-slash text-4xl mb-4"></i>
+                            <p>No has escrito feedbacks todavía</p>
+                        </div>
+
+                        <!-- Lista de Feedbacks -->
+                        <div id="feedbacks-list" class="space-y-6">
+                            <!-- Los feedbacks se cargarán aquí dinámicamente -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="../js/loadComponents.js"></script>
+    <script src="js/perfil.js"></script>
+    <script src="js/header-session-inline.js"></script>
+</body>
+
+</html>
