@@ -21,6 +21,44 @@ function updateCartQuantity(productId, quantity) {
   setCart(cart);
 }
 
+function isUserLoggedIn() {
+  return localStorage.getItem('token') !== null;
+}
+
+function updateCheckoutButton() {
+  const cart = getCart();
+  const checkoutBtnLogged = document.getElementById('checkout-btn-logged');
+  const checkoutBtnNotLogged = document.getElementById('checkout-btn-not-logged');
+  
+  // Si el carrito está vacío, ocultar ambos botones
+  if (cart.length === 0) {
+    if (checkoutBtnLogged) checkoutBtnLogged.classList.add('hidden');
+    if (checkoutBtnNotLogged) checkoutBtnNotLogged.classList.add('hidden');
+    return;
+  }
+  
+  // Si hay items en el carrito, mostrar el botón apropiado
+  if (isUserLoggedIn()) {
+    // Usuario logueado - mostrar botón de finalizar compra
+    if (checkoutBtnLogged) {
+      checkoutBtnLogged.classList.remove('hidden');
+      checkoutBtnLogged.classList.add('block');
+    }
+    if (checkoutBtnNotLogged) {
+      checkoutBtnNotLogged.classList.add('hidden');
+    }
+  } else {
+    // Usuario NO logueado - mostrar mensaje y botón de login
+    if (checkoutBtnLogged) {
+      checkoutBtnLogged.classList.add('hidden');
+    }
+    if (checkoutBtnNotLogged) {
+      checkoutBtnNotLogged.classList.remove('hidden');
+      checkoutBtnNotLogged.classList.add('block');
+    }
+  }
+}
+
 function renderCart() {
   const cart = getCart();
   const cartItems = document.getElementById('cart-items');
@@ -31,6 +69,7 @@ function renderCart() {
     cartItems.innerHTML = '<tr><td colspan="4" class="text-center py-8">El carrito está vacío.</td></tr>';
     document.querySelector('.summary-subtotal').textContent = '$0.00';
     document.querySelector('.summary-total').textContent = '$0.00';
+    updateCheckoutButton();
     return;
   }
 
@@ -63,6 +102,9 @@ function renderCart() {
   const taxes = subtotal * 0.1;
   const total = subtotal + taxes;
   document.querySelector('.summary-total').textContent = `$${total.toFixed(2)}`;
+  
+  // Actualizar botón de checkout según autenticación
+  updateCheckoutButton();
 }
 
 document.addEventListener('DOMContentLoaded', function() {
