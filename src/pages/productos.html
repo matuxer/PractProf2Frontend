@@ -1,0 +1,367 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Favicon -->
+    <link rel="icon" type="icon" href="static/images/favicon.png" />
+    <title>Productos - Ferretería</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">    
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/swiper-bundle.css">
+    <link rel="stylesheet" href="css/custom.css">
+</head>
+
+<body>
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <!-- Mobile Menu Component -->
+    <div id="mobile-menu-placeholder"></div>
+
+    <!-- Page Title -->
+    <section class="bg-gray-100 py-8">
+        <div class="container mx-auto px-4">
+            <h1 class="text-4xl font-bold text-gray-800">Todos los Productos</h1>
+            <p class="text-gray-600 mt-2">Explora nuestro catálogo completo</p>
+            
+            <!-- Barra de búsqueda -->
+            <div class="mt-6 max-w-2xl">
+                <div class="relative">
+                    <input 
+                        type="text" 
+                        id="search-input"
+                        placeholder="Buscar productos por nombre..."
+                        class="w-full px-4 py-3 pl-12 pr-4 rounded-full border-2 border-gray-300 focus:border-primary focus:outline-none transition-colors"
+                    >
+                    <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    <button 
+                        id="clear-search" 
+                        class="hidden absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    >
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Filtros -->
+            <div class="mt-6 flex flex-wrap gap-4 items-end">
+                <!-- Filtro Categoría -->
+                <div class="flex-1 min-w-[200px]">
+                    <label for="filter-categoria" class="block text-sm font-medium text-gray-700 mb-1">
+                        <i class="fas fa-tag mr-1"></i>Categoría
+                    </label>
+                    <select id="filter-categoria" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-primary focus:outline-none">
+                        <option value="">Todas las categorías</option>
+                    </select>
+                </div>
+                
+                <!-- Filtro Precio Mínimo -->
+                <div class="flex-1 min-w-[150px]">
+                    <label for="filter-min" class="block text-sm font-medium text-gray-700 mb-1">
+                        <i class="fas fa-dollar-sign mr-1"></i>Precio Mín.
+                    </label>
+                    <input 
+                        type="number" 
+                        id="filter-min" 
+                        placeholder="0" 
+                        min="0" 
+                        step="100"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-primary focus:outline-none"
+                    >
+                </div>
+                
+                <!-- Filtro Precio Máximo -->
+                <div class="flex-1 min-w-[150px]">
+                    <label for="filter-max" class="block text-sm font-medium text-gray-700 mb-1">
+                        <i class="fas fa-dollar-sign mr-1"></i>Precio Máx.
+                    </label>
+                    <input 
+                        type="number" 
+                        id="filter-max" 
+                        placeholder="Sin límite" 
+                        min="0" 
+                        step="100"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-primary focus:outline-none"
+                    >
+                </div>
+                
+                <!-- Filtro Stock -->
+                <div class="flex items-center">
+                    <label class="flex items-center cursor-pointer">
+                        <input 
+                            type="checkbox" 
+                            id="filter-stock" 
+                            class="mr-2 w-5 h-5 text-primary border-gray-300 rounded focus:ring-primary"
+                        >
+                        <span class="text-sm font-medium text-gray-700">
+                            <i class="fas fa-boxes mr-1"></i>Solo con stock
+                        </span>
+                    </label>
+                </div>
+                
+                <!-- Botón Limpiar Filtros -->
+                <div>
+                    <button 
+                        id="clear-filters" 
+                        class="px-6 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-lg transition-colors"
+                    >
+                        <i class="fas fa-redo mr-1"></i>Limpiar Filtros
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Grid Section -->
+    <section id="all-products" class="py-10">
+        <div class="container mx-auto px-4">
+            <!-- Contador de productos -->
+            <div class="mb-6">
+                <p id="products-count" class="text-lg text-gray-700">
+                    <span class="font-semibold">Productos:</span> <span id="count-number">0</span>
+                </p>
+            </div>
+            
+            <div id="products-container" class="flex flex-wrap -mx-4">
+                <!-- Loader -->
+                <div id="products-loader" class="w-full text-center py-20">
+                    <div class="inline-block">
+                        <i class="fas fa-spinner fa-spin text-5xl text-primary mb-4"></i>
+                        <p class="text-gray-600 text-lg">Cargando productos...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <script src="js/swiper-bundle.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="js/loadComponents.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/fetchProducts.js"></script>
+    <script src="js/addToCart.js"></script>
+    <script>
+        // Renderizar todos los productos cuando se cargue la página
+        let todosLosProductos = []; // Guardar todos los productos
+        let categorias = []; // Guardar categorías
+        
+        document.addEventListener('DOMContentLoaded', async () => {
+            const container = document.getElementById('products-container');
+            const loader = document.getElementById('products-loader');
+            const searchInput = document.getElementById('search-input');
+            const clearButton = document.getElementById('clear-search');
+            const categoriaSelect = document.getElementById('filter-categoria');
+            const minInput = document.getElementById('filter-min');
+            const maxInput = document.getElementById('filter-max');
+            const stockCheckbox = document.getElementById('filter-stock');
+            const clearFiltersBtn = document.getElementById('clear-filters');
+            
+            // Función para construir URL con parámetros
+            function buildURL(params) {
+                const baseURL = 'http://localhost:3001/productos';
+                const queryParams = new URLSearchParams();
+                
+                if (params.nombre) queryParams.append('nombre', params.nombre);
+                if (params.categoria) queryParams.append('categoria', params.categoria);
+                if (params.min) queryParams.append('min', params.min);
+                if (params.max) queryParams.append('max', params.max);
+                if (params.stock !== undefined) queryParams.append('stock', params.stock);
+                
+                const queryString = queryParams.toString();
+                return queryString ? `${baseURL}?${queryString}` : baseURL;
+            }
+            
+            // Función para obtener filtros actuales
+            function getCurrentFilters() {
+                return {
+                    nombre: searchInput.value.trim(),
+                    categoria: categoriaSelect.value,
+                    min: minInput.value ? parseFloat(minInput.value) : null,
+                    max: maxInput.value ? parseFloat(maxInput.value) : null,
+                    stock: stockCheckbox.checked ? true : undefined
+                };
+            }
+            
+            // Función para aplicar filtros
+            async function applyFilters() {
+                const filters = getCurrentFilters();
+                const url = buildURL(filters);
+                
+                try {
+                    loader.style.display = 'block';
+                    container.innerHTML = '';
+                    
+                    const response = await fetch(url);
+                    const productos = await response.json();
+                    
+                    loader.style.display = 'none';
+                    renderProductos(productos);
+                } catch (error) {
+                    console.error('Error al aplicar filtros:', error);
+                    loader.style.display = 'none';
+                    showError();
+                }
+            }
+            
+            // Función para renderizar productos
+            function renderProductos(productos) {
+                const countNumber = document.getElementById('count-number');
+                
+                if (productos && productos.length > 0) {
+                    container.innerHTML = '';
+                    countNumber.textContent = productos.length;
+                    productos.forEach(producto => {
+                        const productCard = `
+                            <div class="w-full sm:w-1/2 lg:w-1/4 px-4 mb-8">
+                                <div class="bg-white p-3 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
+                                    <img src="http://localhost:3001${producto.imgUrl}" 
+                                         alt="${producto.nombre}" 
+                                         class="w-full h-64 object-cover mb-4 rounded-lg">
+                                    <h3 class="text-lg font-semibold mb-2 text-gray-800">${producto.nombre}</h3>
+                                    <p class="text-xs text-gray-500 mb-2">
+                                        <i class="fas fa-tag mr-1"></i>${producto.categoria?.nombre || 'Sin categoría'}
+                                    </p>
+                                    <p class="text-gray-600 text-sm my-2 line-clamp-2">${producto.descripcion}</p>
+                                    <div class="flex items-center justify-between mb-4 mt-auto">
+                                        <span class="text-lg font-bold text-primary">$${producto.precio_unitario.toFixed(2)}</span>
+                                        <span class="text-sm ${producto.stock > 0 ? 'text-green-600' : 'text-red-600'}">
+                                            Stock: ${producto.stock}
+                                        </span>
+                                    </div>
+                                    <button 
+                                      class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full w-full transition-colors duration-300 add-to-cart-btn"
+                                      data-id="${producto.id}"
+                                      data-name="${producto.nombre}"
+                                      data-price="${producto.precio_unitario}"
+                                      data-image="http://localhost:3001${producto.imgUrl}"
+                                    >Agregar al carrito</button>
+                                </div>
+                            </div>
+                        `;
+                        container.innerHTML += productCard;
+                    });
+                } else {
+                    showNoResults();
+                }
+            }
+            
+            function showNoResults() {
+                const countNumber = document.getElementById('count-number');
+                countNumber.textContent = '0';
+                
+                container.innerHTML = `
+                    <div class="w-full text-center py-20">
+                        <div class="inline-block">
+                            <i class="fas fa-search text-6xl text-gray-300 mb-4"></i>
+                            <p class="text-gray-600 text-xl font-semibold mb-2">No se encontraron productos</p>
+                            <p class="text-gray-500">Intenta con otros filtros</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            function showError() {
+                container.innerHTML = `
+                    <div class="w-full text-center py-20">
+                        <div class="inline-block">
+                            <i class="fas fa-exclamation-triangle text-6xl text-red-400 mb-4"></i>
+                            <p class="text-red-600 text-xl font-semibold mb-2">Error al cargar los productos</p>
+                            <p class="text-gray-500">Por favor, intenta nuevamente más tarde</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Cargar categorías
+            async function loadCategorias() {
+                try {
+                    const response = await fetch('http://localhost:3001/producto-categorias');
+                    categorias = await response.json();
+                    
+                    categorias.forEach(categoria => {
+                        const option = document.createElement('option');
+                        option.value = categoria.nombre;
+                        option.textContent = categoria.nombre;
+                        categoriaSelect.appendChild(option);
+                    });
+                } catch (error) {
+                    console.error('Error al cargar categorías:', error);
+                }
+            }
+            
+            // Cargar productos iniciales y categorías
+            try {
+                await loadCategorias();
+                todosLosProductos = await fetchProducts();
+                
+                loader.style.display = 'none';
+                
+                if (todosLosProductos && todosLosProductos.length > 0) {
+                    renderProductos(todosLosProductos);
+                } else {
+                    showNoResults();
+                }
+            } catch (error) {
+                console.error('Error al cargar productos:', error);
+                loader.style.display = 'none';
+                showError();
+            }
+            
+            // Event Listeners
+            let searchTimeout;
+            searchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.trim();
+                
+                if (searchTerm) {
+                    clearButton.classList.remove('hidden');
+                } else {
+                    clearButton.classList.add('hidden');
+                }
+                
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    applyFilters();
+                }, 300);
+            });
+            
+            clearButton.addEventListener('click', () => {
+                searchInput.value = '';
+                clearButton.classList.add('hidden');
+                applyFilters();
+            });
+            
+            categoriaSelect.addEventListener('change', applyFilters);
+            minInput.addEventListener('input', () => {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(applyFilters, 500);
+            });
+            maxInput.addEventListener('input', () => {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(applyFilters, 500);
+            });
+            stockCheckbox.addEventListener('change', applyFilters);
+            
+            clearFiltersBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                categoriaSelect.value = '';
+                minInput.value = '';
+                maxInput.value = '';
+                stockCheckbox.checked = false;
+                clearButton.classList.add('hidden');
+                applyFilters();
+            });
+        });
+    </script>
+    <script src="js/header-session-inline.js"></script>
+</body>
+</html>

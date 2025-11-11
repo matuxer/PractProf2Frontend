@@ -1,0 +1,132 @@
+<header class="bg-slate-400/70 sticky top-0 z-50">
+  <div class="container mx-auto flex justify-between items-center py-4">
+    <!-- Left section: Logo -->
+    <a href="index.html" class="flex items-center">
+      <div>
+        <img
+          src="./static/images/Lacasaheader.png"
+          style="border-radius: 5px;"
+          alt="Logo"
+          class="h-14 w-auto mr-4"
+        />
+      </div>
+    </a>
+
+    <!-- Hamburger menu (for mobile) -->
+    <div class="flex lg:hidden">
+      <button id="hamburger" class="text-white focus:outline-none">
+        <svg
+          class="w-6 h-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16m-7 6h7"
+          ></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Center section: Menu -->
+    <nav class="hidden lg:flex md:flex-grow justify-center">
+      <ul class="flex justify-center space-x-4 text-[#1F2937]">
+        <li>
+          <a href="index.html" class="hover:text-secondary font-semibold"
+            >Inicio</a
+          >
+        </li>
+        <li>
+          <a href="productos.html" class="hover:text-secondary font-semibold"
+            >Productos</a
+          >
+        </li>
+        <li>
+          <a href="especialistas.html" class="hover:text-secondary font-semibold"
+            >Especialistas</a
+          >
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Right section: Buttons (for desktop) -->
+    <div class="hidden lg:flex items-center space-x-4 relative">
+      <!-- Auth buttons (shown when NOT logged in) -->
+      <div id="auth-buttons-desktop" class="flex items-center space-x-4">
+        <a
+          href="registro.html"
+          class="bg-primary border border-primary hover:bg-transparent text-white hover:text-primary font-semibold px-4 py-2 rounded-full inline-block"
+          >Registrarse</a
+        >
+        <a
+          href="login.html"
+          class="bg-primary border border-primary hover:bg-transparent text-white hover:text-primary font-semibold px-4 py-2 rounded-full inline-block"
+          >Iniciar sesión</a
+        >
+      </div>
+      
+      <!-- User info (shown when logged in) -->
+      <div id="user-info-desktop" class="hidden items-center space-x-4">
+        <a href="perfil.html" class="text-gray-800 font-medium hover:text-primary transition-colors">
+          <i class="fas fa-user-circle mr-1"></i>
+          ¡Hola, <span id="user-name-desktop">Usuario</span>!
+        </a>
+        <button
+          id="logout-btn-desktop"
+          class="bg-red-500 border border-red-500 hover:bg-transparent text-white hover:text-red-500 font-semibold px-4 py-2 rounded-full"
+        >
+          <i class="fas fa-sign-out-alt mr-1"></i>Salir
+        </button>
+      </div>
+      
+      <div class="relative group cart-wrapper text-[#1F2937]">
+  <div id="cart-header-desktop" class="relative group cart-wrapper text-[#1F2937]">
+        <a href="/carrito.html">
+          <img
+            src="static/images/cart-shopping.svg"
+            alt="Cart"
+            class="h-6 w-6 group-hover:scale-120"
+          />
+        </a>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Mobile Menu -->
+  <nav class="mobile-menu hidden flex-col items-center space-y-8 lg:hidden">
+    <ul class="w-full">
+      <li><a href="index.html" class="hover:text-secondary font-bold block py-2">Inicio</a></li>
+      <li><a href="productos.html" class="hover:text-secondary font-bold block py-2">Productos</a></li>
+      <li><a href="especialistas.html" class="hover:text-secondary font-bold block py-2">Especialistas</a></li>
+    </ul>
+    
+    <!-- Auth buttons (shown when NOT logged in) -->
+    <div id="auth-buttons-mobile" class="flex flex-col mt-6 space-y-2 items-center">
+      <a href="registro.html"
+        class="bg-primary hover:bg-transparent text-white hover:text-primary border border-primary font-semibold px-4 py-2 rounded-full flex items-center justify-center min-w-[110px]">Registrarse</a>
+      <a href="login.html"
+        class="bg-primary hover:bg-transparent text-white hover:text-primary border border-primary font-semibold px-4 py-2 rounded-full flex items-center justify-center min-w-[110px]">Iniciar sesión</a>
+      <a id="cart-header-mobile" href="carrito.html"
+  class="bg-primary hover:bg-transparent text-white hover:text-primary border border-primary font-semibold px-4 py-2 rounded-full flex items-center justify-center min-w-[110px]">Carrito -&nbsp;<span>5</span>&nbsp;items</a>
+    </div>
+    
+    <!-- User info (shown when logged in) -->
+    <div id="user-info-mobile" class="hidden flex-col mt-6 space-y-2 items-center">
+      <a href="perfil.html" class="text-gray-800 font-medium hover:text-primary transition-colors text-center">
+        <i class="fas fa-user-circle mr-1"></i>
+        ¡Hola, <span id="user-name-mobile">Usuario</span>!
+      </a>
+      <button
+        id="logout-btn-mobile"
+        class="bg-red-500 border border-red-500 hover:bg-transparent text-white hover:text-red-500 font-semibold px-4 py-2 rounded-full min-w-[110px]"
+      >
+        <i class="fas fa-sign-out-alt mr-1"></i>Salir
+      </button>
+      <a id="cart-header-mobile-logged" href="carrito.html"
+  class="bg-primary hover:bg-transparent text-white hover:text-primary border border-primary font-semibold px-4 py-2 rounded-full flex items-center justify-center min-w-[110px]">Cart -&nbsp;<span>5</span>&nbsp;items</a>
+    </div>
+  </nav>
+</header>

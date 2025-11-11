@@ -1,0 +1,324 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Favicon -->
+    <link rel="icon" type="icon" href="static/images/favicon.png" />
+    <title>Especialistas - Ferretería</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">    
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/swiper-bundle.css">
+    <link rel="stylesheet" href="css/custom.css">
+</head>
+
+<body>
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <!-- Mobile Menu Component -->
+    <div id="mobile-menu-placeholder"></div>
+
+    <!-- Page Title -->
+    <section class="bg-gray-100 py-8">
+        <div class="container mx-auto px-4">
+            <h1 class="text-4xl font-bold text-gray-800">Nuestros Especialistas</h1>
+            <p class="text-gray-600 mt-2">Encuentra al profesional perfecto para tu proyecto</p>
+            
+            <!-- Barra de búsqueda -->
+            <div class="mt-6 max-w-2xl">
+                <div class="relative">
+                    <input 
+                        type="text" 
+                        id="search-input"
+                        placeholder="Buscar especialistas por nombre..."
+                        class="w-full px-4 py-3 pl-12 pr-4 rounded-full border-2 border-gray-300 focus:border-primary focus:outline-none transition-colors"
+                    >
+                    <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    <button 
+                        id="clear-search" 
+                        class="hidden absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    >
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Filtros -->
+            <div class="mt-6 flex flex-wrap gap-4 items-end">
+                <!-- Filtro Oficio -->
+                <div class="flex-1 min-w-[200px]">
+                    <label for="filter-oficio" class="block text-sm font-medium text-gray-700 mb-1">
+                        <i class="fas fa-briefcase mr-1"></i>Oficio
+                    </label>
+                    <select id="filter-oficio" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-primary focus:outline-none">
+                        <option value="">Todos los oficios</option>
+                    </select>
+                </div>
+                
+                <!-- Filtro Puntuación Mínima -->
+                <div class="flex-1 min-w-[200px]">
+                    <label for="filter-puntuacion" class="block text-sm font-medium text-gray-700 mb-1">
+                        <i class="fas fa-star mr-1"></i>Puntuación Mínima
+                    </label>
+                    <select id="filter-puntuacion" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-primary focus:outline-none">
+                        <option value="">Cualquier puntuación</option>
+                        <option value="5">⭐⭐⭐⭐⭐ (5 estrellas)</option>
+                        <option value="4">⭐⭐⭐⭐ (4+ estrellas)</option>
+                        <option value="3">⭐⭐⭐ (3+ estrellas)</option>
+                        <option value="2">⭐⭐ (2+ estrellas)</option>
+                        <option value="1">⭐ (1+ estrellas)</option>
+                    </select>
+                </div>
+                
+                <!-- Filtro Disponibilidad -->
+                <div class="flex items-center">
+                    <label class="flex items-center cursor-pointer">
+                        <input 
+                            type="checkbox" 
+                            id="filter-disponibilidad" 
+                            class="mr-2 w-5 h-5 text-primary border-gray-300 rounded focus:ring-primary"
+                        >
+                        <span class="text-sm font-medium text-gray-700">
+                            <i class="fas fa-check-circle mr-1"></i>Solo disponibles
+                        </span>
+                    </label>
+                </div>
+                
+                <!-- Botón Limpiar Filtros -->
+                <div>
+                    <button 
+                        id="clear-filters" 
+                        class="px-6 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-lg transition-colors"
+                    >
+                        <i class="fas fa-redo mr-1"></i>Limpiar Filtros
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Specialists Grid Section -->
+    <section id="all-specialists" class="py-10">
+        <div class="container mx-auto px-4">
+            <!-- Contador de especialistas -->
+            <div class="mb-6">
+                <p id="specialists-count" class="text-lg text-gray-700">
+                    <span class="font-semibold">Especialistas:</span> <span id="count-number">0</span>
+                </p>
+            </div>
+            
+            <div id="specialists-container" class="flex flex-wrap -mx-4">
+                <!-- Loader -->
+                <div id="specialists-loader" class="w-full text-center py-20">
+                    <div class="inline-block">
+                        <i class="fas fa-spinner fa-spin text-5xl text-primary mb-4"></i>
+                        <p class="text-gray-600 text-lg">Cargando especialistas...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <script src="js/swiper-bundle.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="js/loadComponents.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/fetchEspecialistas.js"></script>
+    <script src="js/renderEspecialista.js"></script>
+    <script>
+        // Renderizar todos los especialistas cuando se cargue la página
+        let todosLosEspecialistas = []; // Guardar todos los especialistas
+        let oficios = []; // Guardar oficios
+        let template = null;
+        
+        document.addEventListener('DOMContentLoaded', async () => {
+            const container = document.getElementById('specialists-container');
+            const loader = document.getElementById('specialists-loader');
+            const searchInput = document.getElementById('search-input');
+            const clearButton = document.getElementById('clear-search');
+            const oficioSelect = document.getElementById('filter-oficio');
+            const puntuacionSelect = document.getElementById('filter-puntuacion');
+            const disponibilidadCheckbox = document.getElementById('filter-disponibilidad');
+            const clearFiltersBtn = document.getElementById('clear-filters');
+            
+            // Función para construir URL con parámetros
+            function buildURL(params) {
+                const baseURL = 'http://localhost:3001/especialistas';
+                const queryParams = new URLSearchParams();
+                
+                if (params.nombre) queryParams.append('nombre', params.nombre);
+                if (params.oficio) queryParams.append('oficio', params.oficio);
+                if (params.puntuacion) queryParams.append('puntuacion', params.puntuacion);
+                if (params.disponibilidad !== undefined) queryParams.append('disponibilidad', params.disponibilidad);
+                
+                const queryString = queryParams.toString();
+                return queryString ? `${baseURL}?${queryString}` : baseURL;
+            }
+            
+            // Función para obtener filtros actuales
+            function getCurrentFilters() {
+                return {
+                    nombre: searchInput.value.trim(),
+                    oficio: oficioSelect.value,
+                    puntuacion: puntuacionSelect.value ? parseInt(puntuacionSelect.value) : null,
+                    disponibilidad: disponibilidadCheckbox.checked ? true : undefined
+                };
+            }
+            
+            // Función para aplicar filtros
+            async function applyFilters() {
+                const filters = getCurrentFilters();
+                const url = buildURL(filters);
+                
+                try {
+                    loader.style.display = 'block';
+                    container.innerHTML = '';
+                    
+                    const response = await fetch(url);
+                    const especialistas = await response.json();
+                    
+                    loader.style.display = 'none';
+                    renderEspecialistas(especialistas);
+                } catch (error) {
+                    console.error('Error al aplicar filtros:', error);
+                    loader.style.display = 'none';
+                    showError();
+                }
+            }
+            
+            // Función para renderizar especialistas
+            function renderEspecialistas(especialistas) {
+                const countNumber = document.getElementById('count-number');
+                
+                if (especialistas && especialistas.length > 0) {
+                    container.innerHTML = '';
+                    countNumber.textContent = especialistas.length;
+                    
+                    especialistas.forEach(especialista => {
+                        const cardHTML = renderEspecialista(especialista, template);
+                        const wrappedCard = `
+                            <div class="w-full sm:w-1/2 lg:w-1/4 px-4 mb-8">
+                                ${cardHTML}
+                            </div>
+                        `;
+                        container.innerHTML += wrappedCard;
+                    });
+                } else {
+                    showNoResults();
+                }
+            }
+            
+            function showNoResults() {
+                const countNumber = document.getElementById('count-number');
+                countNumber.textContent = '0';
+                
+                container.innerHTML = `
+                    <div class="w-full text-center py-20">
+                        <div class="inline-block">
+                            <i class="fas fa-search text-6xl text-gray-300 mb-4"></i>
+                            <p class="text-gray-600 text-xl font-semibold mb-2">No se encontraron especialistas</p>
+                            <p class="text-gray-500">Intenta con otros filtros</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            function showError() {
+                container.innerHTML = `
+                    <div class="w-full text-center py-20">
+                        <div class="inline-block">
+                            <i class="fas fa-exclamation-triangle text-6xl text-red-400 mb-4"></i>
+                            <p class="text-red-600 text-xl font-semibold mb-2">Error al cargar los especialistas</p>
+                            <p class="text-gray-500">Por favor, intenta nuevamente más tarde</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Cargar oficios
+            async function loadOficios() {
+                try {
+                    const response = await fetch('http://localhost:3001/oficios');
+                    oficios = await response.json();
+                    
+                    oficios.forEach(oficio => {
+                        const option = document.createElement('option');
+                        option.value = oficio.nombre;
+                        option.textContent = oficio.nombre;
+                        oficioSelect.appendChild(option);
+                    });
+                } catch (error) {
+                    console.error('Error al cargar oficios:', error);
+                }
+            }
+            
+            // Cargar especialistas iniciales y oficios
+            try {
+                await loadOficios();
+                todosLosEspecialistas = await fetchEspecialistas();
+                template = await loadEspecialistaTemplate();
+                
+                loader.style.display = 'none';
+                
+                if (todosLosEspecialistas && todosLosEspecialistas.length > 0) {
+                    renderEspecialistas(todosLosEspecialistas);
+                } else {
+                    showNoResults();
+                }
+            } catch (error) {
+                console.error('Error al cargar especialistas:', error);
+                loader.style.display = 'none';
+                showError();
+            }
+            
+            // Event Listeners
+            let searchTimeout;
+            searchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.trim();
+                
+                if (searchTerm) {
+                    clearButton.classList.remove('hidden');
+                } else {
+                    clearButton.classList.add('hidden');
+                }
+                
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    applyFilters();
+                }, 300);
+            });
+            
+            clearButton.addEventListener('click', () => {
+                searchInput.value = '';
+                clearButton.classList.add('hidden');
+                applyFilters();
+            });
+            
+            oficioSelect.addEventListener('change', applyFilters);
+            puntuacionSelect.addEventListener('change', applyFilters);
+            disponibilidadCheckbox.addEventListener('change', applyFilters);
+            
+            clearFiltersBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                oficioSelect.value = '';
+                puntuacionSelect.value = '';
+                disponibilidadCheckbox.checked = false;
+                clearButton.classList.add('hidden');
+                applyFilters();
+            });
+        });
+    </script>
+
+    <script src="js/header-session-inline.js"></script>
+</body>
+</html>

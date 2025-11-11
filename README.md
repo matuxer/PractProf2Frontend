@@ -33,21 +33,25 @@ Con Tailwind usas clases predefinidas directamente en el HTML:
 
 ### 1. Requisitos previos
 - **Node.js** (descargar de [nodejs.org](https://nodejs.org))
-- **Git** (opcional, para colaborar)
+- **Git** (para clonar el repositorio)
 - **Editor de código** (recomendado: [VS Code](https://code.visualstudio.com))
 
-### 2. Instalar el proyecto
+### 2. Clonar e instalar el proyecto
 ```bash
-# Abrir terminal en la carpeta del proyecto
-cd ferreteria/frontend
+# Clonar el repositorio
+git clone https://github.com/matuxer/PractProf2Frontend.git
+cd PractProf2Frontend
 
-# Instalar las herramientas necesarias
+# Instalar dependencias
 npm install
+
+# Generar archivos necesarios (PRIMERA VEZ solamente)
+npm run build
 ```
 
-### 3. Iniciar el proyecto
+### 3. Iniciar el proyecto en modo desarrollo
 ```bash
-# Un solo comando que hace todo
+# Inicia el servidor con watch automático
 npm run dev
 ```
 
@@ -55,6 +59,8 @@ Después de ejecutar `npm run dev`, abre tu navegador en:
 **http://localhost:8080**
 
 ¡Ya tienes tu sitio web funcionando! 🎉
+
+> **Nota importante:** La carpeta `public/` se genera automáticamente y NO se versiona en Git. Solo trabajas en la carpeta `src/`.
 
 ---
 
@@ -65,23 +71,28 @@ ferreteria/frontend/
 ├── src/                    # 📝 Aquí trabajas (archivos fuente)
 │   ├── pages/             # 📄 Páginas HTML del sitio
 │   │   ├── index.html     # Página principal
-│   │   ├── about.html     # Página "Acerca de"
-│   │   └── page-*.html    # Otras páginas
-│   ├── components/        # 🧩 Piezas reutilizables
+│   │   ├── tienda.html    # Página de tienda
+│   │   └── *.html         # Otras páginas
+│   ├── components/        # 🧩 Componentes reutilizables
 │   │   ├── header.html    # Encabezado del sitio
 │   │   └── footer.html    # Pie de página
 │   ├── js/               # ⚡ Archivos JavaScript
-│   │   ├── main.js       # Script principal
-│   │   └── pages-list.js # Lista de páginas
+│   │   ├── script.js     # Script principal
+│   │   └── loadComponents.js # Carga de componentes
+│   ├── static/           # 🖼️ Imágenes y recursos estáticos
+│   │   └── images/       # Todas las imágenes del sitio
 │   └── styles/           # 🎨 Estilos CSS
-│       └── tailwind.css  # Configuración de Tailwind
-├── public/               # 🌐 Sitio web final (se genera automáticamente)
-└── package.json          # 📦 Configuración del proyecto
+│       ├── tailwind.css  # Configuración de Tailwind
+│       └── custom.css    # Estilos personalizados
+├── public/               # 🌐 Sitio web final (GENERADO AUTOMÁTICAMENTE - NO EDITAR)
+├── package.json          # 📦 Configuración del proyecto
+└── .gitignore            # 🚫 Archivos ignorados por Git (incluye public/)
 ```
 
-**Regla importante:** 
-- ✅ **SÍ edita archivos en `src/`** - Aquí haces tus cambios
+**Reglas importantes:** 
+- ✅ **SÍ edita archivos en `src/`** - Aquí haces todos tus cambios
 - ❌ **NO edites archivos en `public/`** - Se generan automáticamente
+- 📝 **`public/` NO está en Git** - Solo se genera localmente o en build
 
 ---
 
@@ -92,22 +103,30 @@ ferreteria/frontend/
 npm run dev
 ```
 **Esto hace todo automáticamente:**
-- Compila Tailwind CSS
-- Copia tus páginas HTML
-- Copia los componentes (header, footer)
-- Copia los archivos JavaScript
-- Inicia un servidor web local
-- **Recarga automáticamente** cuando cambias algo
+- Compila Tailwind CSS en tiempo real
+- Observa cambios en `src/` y los copia a `public/`
+- Copia archivos HTML, componentes, JS, imágenes y Swiper
+- Inicia un servidor web local en `http://localhost:8080`
+- **Recarga automáticamente** cuando cambias algo en `src/`
 
-### Para Producción (subir al hosting)
+### Para Build Inicial o Producción
 ```bash
 npm run build
 ```
-Prepara todos los archivos optimizados en la carpeta `public/` listos para subir a internet.
+**Genera todos los archivos optimizados en `public/`:**
+- Compila y minifica el CSS de Tailwind
+- Copia todos los archivos de `src/` a `public/`
+- Incluye archivos de Swiper para el carrusel
+- Listo para desplegar en servidor web
 
-### Solo el servidor (si ya compilaste)
+### Solo compilar CSS
 ```bash
-npm run serve
+npm run build:css
+```
+
+### Solo copiar archivos
+```bash
+npm run build:copy
 ```
 
 ---

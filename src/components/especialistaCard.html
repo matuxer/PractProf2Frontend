@@ -1,0 +1,49 @@
+<a href="especialista-detalle.html?id={{id}}" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
+  <!-- Imagen del Especialista -->
+  <div class="relative h-64 bg-gray-100">
+    <img 
+      src="{{perfilImgUrl}}" 
+      alt="{{nombre}} {{apellido}}" 
+      class="w-full h-full object-cover"
+    >
+    {{#if disponibilidad}}
+    <span class="absolute top-4 right-4 bg-green-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
+      Disponible
+    </span>
+    {{else}}
+    <span class="absolute top-4 right-4 bg-red-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
+      No Disponible
+    </span>
+    {{/if}}
+  </div>
+
+  <!-- Contenido de la Card -->
+  <div class="p-6 flex-grow flex flex-col">
+    <!-- Nombre del Especialista -->
+    <h3 class="text-xl font-bold text-gray-800 mb-2">
+      {{nombre}} {{apellido}}
+    </h3>
+
+    <!-- Oficio -->
+    <div class="mb-3 flex-grow">
+      <div class="flex items-center text-gray-600 mb-1">
+        <i class="fas fa-briefcase mr-2"></i>
+        <span class="font-semibold">{{oficioNombre}}</span>
+      </div>
+      <p class="text-sm text-gray-500 italic">{{oficioCategoria}}</p>
+    </div>
+
+    <!-- Rating con Estrellas -->
+    <div class="flex items-center mb-4">
+      {{#each stars}}
+      <i class="fas fa-star text-yellow-400"></i>
+      {{/each}}
+      <span class="ml-2 text-gray-600 text-sm">({{puntuacion}}/5)</span>
+    </div>
+
+    <!-- Botón de Acción -->
+    <span class="w-full bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary py-2 px-4 rounded-full font-semibold transition-colors duration-300 mt-auto text-center block">
+      Ver Perfil
+    </span>
+  </div>
+</a>
