@@ -76,9 +76,10 @@
                         </div>
                         
                         <!-- Botón para usuario logueado -->
-                        <a id="checkout-btn-logged" href="/checkout" class="hidden bg-primary text-white border hover:border-primary hover:bg-transparent hover:text-primary py-2 px-4 rounded-full mt-4 w-full text-center">
-                            Finalizar compra
-                        </a>
+                        <button id="checkout-btn-logged" class="hidden bg-primary text-white border hover:border-primary hover:bg-transparent hover:text-primary py-2 px-4 rounded-full mt-4 w-full disabled:opacity-50 disabled:cursor-not-allowed">
+                            <span id="checkout-btn-text">Finalizar compra</span>
+                            <i id="checkout-spinner" class="fas fa-spinner fa-spin ml-2 hidden"></i>
+                        </button>
                         
                         <!-- Mensaje/Botón para usuario no logueado -->
                         <div id="checkout-btn-not-logged" class="hidden mt-4">
