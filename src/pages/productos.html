@@ -149,6 +149,7 @@
     <script src="js/loadComponents.js"></script>
     <script src="js/script.js"></script>
     <script src="js/fetchProducts.js"></script>
+    <script src="js/addToCart.js"></script>
     <script>
         // Renderizar todos los productos cuando se cargue la página
         let todosLosProductos = []; // Guardar todos los productos
@@ -219,7 +220,6 @@
                 if (productos && productos.length > 0) {
                     container.innerHTML = '';
                     countNumber.textContent = productos.length;
-                    
                     productos.forEach(producto => {
                         const productCard = `
                             <div class="w-full sm:w-1/2 lg:w-1/4 px-4 mb-8">
@@ -238,9 +238,13 @@
                                             Stock: ${producto.stock}
                                         </span>
                                     </div>
-                                    <button class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full w-full transition-colors duration-300">
-                                        Agregar al Carrito
-                                    </button>
+                                    <button 
+                                      class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full w-full transition-colors duration-300 add-to-cart-btn"
+                                      data-id="${producto.id}"
+                                      data-name="${producto.nombre}"
+                                      data-price="${producto.precio_unitario}"
+                                      data-image="http://localhost:3001${producto.imgUrl}"
+                                    >Agregar al carrito</button>
                                 </div>
                             </div>
                         `;
