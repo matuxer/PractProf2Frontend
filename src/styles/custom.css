@@ -12,6 +12,10 @@ button:hover {
     background-color: #1a1a1a;
     width: 100%;
     color: white;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
 }
 
 .mobile-menu a {
