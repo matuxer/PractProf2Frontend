@@ -20,6 +20,7 @@ function renderEspecialista(especialista, template) {
   
   // Reemplazar placeholders básicos
   let html = template
+    .replace(/{{id}}/g, especialista.id)
     .replace(/{{perfilImgUrl}}/g, perfilImgUrl)
     .replace(/{{nombre}}/g, especialista.nombre)
     .replace(/{{apellido}}/g, especialista.apellido)

@@ -1,0 +1,132 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Favicon -->
+    <link rel="icon" type="icon" href="static/images/favicon.png" />
+    <title>Especialista - La Casa de la Ferretería</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/custom.css">
+</head>
+
+<body class="bg-gray-50">
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <!-- Especialista Detail -->
+    <section class="py-16">
+        <div class="container mx-auto px-4">
+            <!-- Loading State -->
+            <div id="loading-state" class="text-center py-20">
+                <i class="fas fa-spinner fa-spin text-4xl text-primary mb-4"></i>
+                <p class="text-gray-600">Cargando información del especialista...</p>
+            </div>
+
+            <!-- Error State -->
+            <div id="error-state" class="hidden text-center py-20">
+                <i class="fas fa-exclamation-circle text-4xl text-red-500 mb-4"></i>
+                <p class="text-gray-600 mb-4">No se pudo cargar la información del especialista</p>
+                <a href="especialistas.html" class="bg-primary text-white px-6 py-2 rounded-full inline-block hover:bg-opacity-90">
+                    Volver a Especialistas
+                </a>
+            </div>
+
+            <!-- Especialista Content -->
+            <div id="especialista-content" class="hidden">
+                <!-- Back Button -->
+                <div class="mb-6">
+                    <a href="especialistas.html" class="text-primary hover:text-opacity-80 font-medium">
+                        <i class="fas fa-arrow-left mr-2"></i>Volver a Especialistas
+                    </a>
+                </div>
+
+                <!-- Especialista Info Card -->
+                <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+                    <div class="flex flex-col md:flex-row gap-8">
+                        <!-- Imagen -->
+                        <div class="flex-shrink-0">
+                            <img id="especialista-img" 
+                                 src="" 
+                                 alt="Especialista" 
+                                 class="w-48 h-48 rounded-full object-cover shadow-md border-4 border-primary">
+                        </div>
+
+                        <!-- Información -->
+                        <div class="flex-grow">
+                            <h1 id="especialista-nombre" class="text-3xl font-bold text-gray-800 mb-2"></h1>
+                            
+                            <div class="flex items-center gap-4 mb-4">
+                                <span id="especialista-oficio" class="text-xl text-gray-600">
+                                    <i class="fas fa-briefcase mr-2 text-primary"></i>
+                                </span>
+                                
+                                <div id="especialista-rating" class="flex items-center">
+                                    <!-- Estrellas se generan dinámicamente -->
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-6 mb-6">
+                                <div id="especialista-disponibilidad" class="flex items-center">
+                                    <!-- Estado de disponibilidad -->
+                                </div>
+                                
+                                <div class="text-gray-600">
+                                    <i class="fas fa-comments mr-2 text-primary"></i>
+                                    <span id="total-feedbacks">0</span> evaluaciones
+                                </div>
+                            </div>
+
+                            <!-- Botón de Agregar Feedback (solo para usuarios logueados) -->
+                            <div id="feedback-button-container">
+                                <button id="add-feedback-btn" class="hidden bg-primary text-white px-6 py-3 rounded-full font-semibold hover:bg-opacity-90 transition-all">
+                                    <i class="fas fa-star mr-2"></i>Agregar Feedback
+                                </button>
+                                
+                                <a href="login.html" id="login-to-feedback-btn" class="hidden bg-gray-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-opacity-90 transition-all">
+                                    <i class="fas fa-sign-in-alt mr-2"></i>Inicia sesión para dejar feedback
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feedbacks Section -->
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6">
+                        <i class="fas fa-star text-yellow-400 mr-2"></i>
+                        Evaluaciones de Clientes
+                    </h2>
+
+                    <!-- No hay feedbacks -->
+                    <div id="no-feedbacks" class="hidden text-center py-12 text-gray-500">
+                        <i class="fas fa-comment-slash text-4xl mb-4"></i>
+                        <p>Este especialista aún no tiene evaluaciones</p>
+                    </div>
+
+                    <!-- Lista de Feedbacks -->
+                    <div id="feedbacks-list" class="space-y-6">
+                        <!-- Los feedbacks se cargarán aquí dinámicamente -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="../js/loadComponents.js"></script>
+    <script src="js/especialista-detalle.js"></script>
+    <script src="js/header-session-inline.js"></script>
+</body>
+
+</html>
