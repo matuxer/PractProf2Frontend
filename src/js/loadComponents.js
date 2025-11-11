@@ -3,7 +3,10 @@ async function loadComponent(id, file) {
     try {
         const response = await fetch(file);
         const html = await response.text();
-        document.getElementById(id).innerHTML = html;
+        const element = document.getElementById(id);
+        if (element) {
+            element.innerHTML = html;
+        }
     } catch (error) {
         console.error(`Error cargando ${file}:`, error);
     }
@@ -16,6 +19,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     // Inicializar el toggle del menú móvil después de cargar los componentes
     initMobileMenu();
+    
+    // Emitir evento personalizado para indicar que los componentes están cargados
+    window.dispatchEvent(new Event('componentsLoaded'));
 });
 
 // Función para inicializar el menú móvil
